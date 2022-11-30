@@ -21,51 +21,68 @@ fn generate_lines() -> Vec<Vec<(usize, usize, usize)>> {
     triples
 }
 
-struct Board {
-    spots: [[[bool; SIZE]; SIZE]; SIZE],
+#[derive(PartialEq, Eq, Clone, Copy)]
+pub enum Player {
+    A,
+    B,
+}
+
+pub struct Board {
+    spots: [[[Option<Player>; SIZE]; SIZE]; SIZE],
 }
 
 impl Board {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             spots: [
                 [
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
                 ],
                 [
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
                 ],
                 [
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
                 ],
                 [
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
-                    [false, false, false, false],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
+                    [None, None, None, None],
                 ],
             ],
         }
     }
 
-    fn place(&mut self, x: usize, y: usize, z: usize) -> Result<PlaceResult, PlaceErr> {
-        if self.spots[z][y][x] {
+    pub fn place(
+        &mut self,
+        player: Player,
+        x: usize,
+        y: usize,
+        z: usize,
+    ) -> Result<PlaceResult, PlaceErr> {
+        if self.spots[z][y][x].is_some() {
             Err(PlaceErr::Occupied)
         } else {
-            self.spots[z][y][x] = true;
-            if generate_lines()
-                .iter()
-                .any(|sol| sol.iter().all(|p| self.spots[p.2][p.1][p.0]))
-            {
+            self.spots[z][y][x] = Some(player);
+            if generate_lines().iter().any(|sol| {
+                sol.iter().all(|p| {
+                    if let Some(p) = self.spots[p.2][p.1][p.0] {
+                        p == player
+                    } else {
+                        false
+                    }
+                })
+            }) {
                 Ok(PlaceResult::GameOver)
             } else {
                 Ok(PlaceResult::Continue)
@@ -81,13 +98,13 @@ impl Default for Board {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-enum PlaceResult {
+pub enum PlaceResult {
     Continue,
     GameOver,
 }
 
 #[derive(Debug, PartialEq, Eq)]
-enum PlaceErr {
+pub enum PlaceErr {
     Occupied,
 }
 
@@ -98,43 +115,53 @@ mod tests {
     #[test]
     fn placing_on_an_empty_board_is_successful() {
         let mut board = Board::new();
-        let result = board.place(0, 1, 2);
+        let result = board.place(Player::A, 0, 1, 2);
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 
     #[test]
     fn cannot_place_on_the_same_spot_twice() {
         let mut board = Board::new();
-        board.place(0, 1, 2).unwrap();
-        let result = board.place(0, 1, 2);
+        board.place(Player::A, 0, 1, 2).unwrap();
+        let result = board.place(Player::A, 0, 1, 2);
         assert_eq!(result, Err(PlaceErr::Occupied));
     }
 
     #[test]
     fn placing_on_a_second_empty_spot_is_valid() {
         let mut board = Board::new();
-        board.place(0, 1, 2).unwrap();
-        let result = board.place(1, 2, 3);
+        board.place(Player::A, 0, 1, 2).unwrap();
+        let result = board.place(Player::A, 1, 2, 3);
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 
     #[test]
     fn the_game_is_over_when_4_are_placed_in_a_line() {
         let mut board = Board::new();
-        board.place(0, 0, 0).unwrap();
-        board.place(1, 0, 0).unwrap();
-        board.place(2, 0, 0).unwrap();
-        let result = board.place(3, 0, 0);
+        board.place(Player::A, 0, 0, 0).unwrap();
+        board.place(Player::A, 1, 0, 0).unwrap();
+        board.place(Player::A, 2, 0, 0).unwrap();
+        let result = board.place(Player::A, 3, 0, 0);
         assert_eq!(result, Ok(PlaceResult::GameOver));
     }
 
     #[test]
     fn the_game_continues_when_4_are_not_placed_in_a_line() {
         let mut board = Board::new();
-        board.place(0, 0, 0).unwrap();
-        board.place(1, 0, 0).unwrap();
-        board.place(2, 0, 0).unwrap();
-        let result = board.place(0, 1, 0);
+        board.place(Player::A, 0, 0, 0).unwrap();
+        board.place(Player::A, 1, 0, 0).unwrap();
+        board.place(Player::A, 2, 0, 0).unwrap();
+        let result = board.place(Player::A, 0, 1, 0);
+        assert_eq!(result, Ok(PlaceResult::Continue));
+    }
+
+    #[test]
+    fn the_game_continues_when_4_in_a_row_arent_the_same_player() {
+        let mut board = Board::new();
+        board.place(Player::A, 0, 0, 0).unwrap();
+        board.place(Player::A, 1, 0, 0).unwrap();
+        board.place(Player::A, 2, 0, 0).unwrap();
+        let result = board.place(Player::B, 3, 0, 0);
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 }
