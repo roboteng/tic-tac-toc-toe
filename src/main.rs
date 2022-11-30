@@ -33,7 +33,7 @@ fn create_spheres(
                 commands.spawn(PbrBundle {
                     mesh: mesh.clone(),
                     material: materials.add(Color::rgb(x / 3.0, y / 3.0, z / 3.0).into()),
-                    transform: Transform::from_xyz(x, y, z),
+                    transform: Transform::from_xyz(x - 1.5, y - 1.5, z - 1.5),
                     ..default()
                 });
             }
