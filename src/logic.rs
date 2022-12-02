@@ -1,3 +1,5 @@
+pub mod computer_player;
+
 const SIZE: usize = 4;
 fn generate_lines() -> Vec<Vec<(usize, usize, usize)>> {
     let fs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |x| x, |x| 3 - x];
@@ -28,6 +30,7 @@ pub enum Player {
     B,
 }
 
+#[derive(Clone)]
 pub struct Board {
     pub spots: [[[Option<Player>; SIZE]; SIZE]; SIZE],
     lines: Vec<Vec<(usize, usize, usize)>>,

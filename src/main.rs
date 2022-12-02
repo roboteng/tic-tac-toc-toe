@@ -3,6 +3,7 @@ use bevy_flycam::PlayerPlugin;
 use game_display::*;
 use logic::*;
 
+mod common;
 mod game_display;
 mod logic;
 
