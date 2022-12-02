@@ -28,7 +28,7 @@ pub enum Player {
 }
 
 pub struct Board {
-    spots: [[[Option<Player>; SIZE]; SIZE]; SIZE],
+    pub spots: [[[Option<Player>; SIZE]; SIZE]; SIZE],
 }
 
 impl Board {
