@@ -1,23 +1,24 @@
 const SIZE: usize = 4;
 fn generate_lines() -> Vec<Vec<(usize, usize, usize)>> {
-    let fxs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |x| x, |x| 3 - x];
-    let fys: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |y| y, |y| 3 - y];
-    let fzs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |z| z, |z| 3 - z];
-    let mut triples = Vec::new();
-    for fx in fxs {
-        for fy in fys {
-            for fz in fzs {
+    let fs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |x| x, |x| 3 - x];
+    let mut triples: Vec<Vec<(usize, usize, usize)>> = Vec::new();
+    for fx in fs {
+        for fy in fs {
+            for fz in fs {
                 let mut sol = Vec::new();
                 for i in 0..SIZE {
                     sol.push((fx(i), fy(i), fz(i)));
                 }
-                if !sol.iter().skip(1).any(|p| *p == sol[0]) {
+                if !sol.iter().skip(1).any(|p| *p == sol[0])
+                    && !triples
+                        .iter()
+                        .any(|known_sol| known_sol[0] == sol[3] && known_sol[3] == sol[0])
+                {
                     triples.push(sol);
                 }
             }
         }
     }
-    //TODO contains doubles, remove them
     triples
 }
 
@@ -29,11 +30,13 @@ pub enum Player {
 
 pub struct Board {
     pub spots: [[[Option<Player>; SIZE]; SIZE]; SIZE],
+    lines: Vec<Vec<(usize, usize, usize)>>,
 }
 
 impl Board {
     pub fn new() -> Self {
         Self {
+            lines: generate_lines(),
             spots: [
                 [
                     [None, None, None, None],
@@ -74,7 +77,7 @@ impl Board {
             Err(PlaceErr::Occupied)
         } else {
             self.spots[z][y][x] = Some(player);
-            if generate_lines().iter().any(|sol| {
+            if self.lines.iter().any(|sol| {
                 sol.iter().all(|p| {
                     if let Some(p) = self.spots[p.2][p.1][p.0] {
                         p == player
