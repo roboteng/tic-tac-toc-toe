@@ -1,4 +1,4 @@
-use std::{f32::consts::PI, ops::Deref};
+use std::f32::consts::PI;
 
 use bevy::prelude::*;
 use bevy_flycam::PlayerPlugin;
@@ -65,7 +65,7 @@ fn handle_input(
         }
     }
     if input.just_pressed(KeyCode::Return) {
-        for mut selector in selectors.iter_mut() {
+        for selector in &selectors {
             board
                 .place(Player::A, selector.x, selector.y, selector.z)
                 .unwrap();
@@ -97,8 +97,8 @@ fn make_selector(
                 radius: 0.35,
                 ..default()
             })),
-            material: materials.add(Color::GREEN.into()),
-            transform: Transform::from_xyz(1 as f32 - 1.5, 2 as f32 - 1.5, 3 as f32 - 1.5),
+            material: materials.add(Color::rgba(0.0, 1.0, 0.0, 0.5).into()),
+            transform: Transform::from_xyz(1.0 - 1.5, 2.0 - 1.5, 3.0 - 1.5),
             ..default()
         })
         .insert(Selector { x: 1, y: 2, z: 3 });
@@ -126,9 +126,9 @@ fn replace_board(
                             })),
                             material: materials.add(
                                 (if *player == Player::A {
-                                    Color::WHITE
+                                    Color::rgba(1.0, 1.0, 1.0, 0.75)
                                 } else {
-                                    Color::BLACK
+                                    Color::rgba(0.0, 0.0, 0.0, 0.75)
                                 })
                                 .into(),
                             ),
