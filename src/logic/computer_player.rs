@@ -60,6 +60,26 @@ fn next_open(board: &Board) -> Option<Location> {
     None
 }
 
+fn eval(player: Player, board: &Board) -> f32 {
+    board
+        .lines
+        .iter()
+        .map(|l| {
+            let mut score = 1.0_f32;
+            for spot in l {
+                if let Some(p) = board.spots[spot.2][spot.1][spot.0] {
+                    if p != player {
+                        return 0.0;
+                    }
+                    score *= 2.0;
+                }
+            }
+            score
+        })
+        .reduce(|a, b| a + b)
+        .unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -84,5 +104,37 @@ mod tests {
 
         let next_move = next(Player::B, &board, 2);
         assert_eq!(next_move, Location::new(3, 0, 0));
+    }
+
+    #[test]
+    fn board_with_more_lines_should_be_better() {
+        let mut good_board = Board::new();
+        good_board.place(Player::A, Location::new(1, 0, 0)).unwrap();
+        good_board.place(Player::A, Location::new(2, 0, 0)).unwrap();
+        good_board.place(Player::A, Location::new(0, 1, 0)).unwrap();
+        good_board.place(Player::A, Location::new(0, 2, 0)).unwrap();
+
+        let mut bad_board = Board::new();
+        bad_board.place(Player::A, Location::new(1, 0, 0)).unwrap();
+        bad_board.place(Player::A, Location::new(0, 1, 0)).unwrap();
+        bad_board.place(Player::A, Location::new(3, 2, 3)).unwrap();
+        bad_board.place(Player::A, Location::new(0, 3, 1)).unwrap();
+
+        assert!(eval(Player::A, &good_board) > eval(Player::A, &bad_board));
+    }
+
+    #[test]
+    fn board_with_line_blocked_should_be_worse_than_unblocked() {
+        let mut good_board = Board::new();
+        good_board.place(Player::A, Location::new(0, 0, 0)).unwrap();
+        good_board.place(Player::A, Location::new(3, 0, 0)).unwrap();
+        good_board.place(Player::B, Location::new(0, 2, 0)).unwrap();
+
+        let mut bad_board = Board::new();
+        bad_board.place(Player::A, Location::new(0, 0, 0)).unwrap();
+        bad_board.place(Player::A, Location::new(3, 0, 0)).unwrap();
+        bad_board.place(Player::B, Location::new(2, 0, 0)).unwrap();
+
+        assert!(eval(Player::A, &good_board) > eval(Player::A, &bad_board));
     }
 }
