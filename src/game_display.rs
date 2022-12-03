@@ -1,4 +1,7 @@
-use crate::logic::{Board, Player};
+use crate::{
+    common::Location,
+    logic::{Board, Player},
+};
 use bevy::prelude::*;
 use core::f32::consts::PI;
 
@@ -113,7 +116,7 @@ pub fn handle_input(
     if input.just_pressed(KeyCode::Return) {
         for selector in &selectors {
             board
-                .place(Player::A, selector.x, selector.y, selector.z)
+                .place(Player::A, Location::new(selector.x, selector.y, selector.z))
                 .unwrap();
         }
     }

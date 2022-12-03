@@ -1,3 +1,5 @@
+use crate::common::Location;
+
 pub mod computer_player;
 
 const SIZE: usize = 4;
@@ -69,17 +71,11 @@ impl Board {
         }
     }
 
-    pub fn place(
-        &mut self,
-        player: Player,
-        x: usize,
-        y: usize,
-        z: usize,
-    ) -> Result<PlaceResult, PlaceErr> {
-        if self.spots[z][y][x].is_some() {
+    pub fn place(&mut self, player: Player, loc: Location) -> Result<PlaceResult, PlaceErr> {
+        if self.spots[loc.z][loc.y][loc.x].is_some() {
             Err(PlaceErr::Occupied)
         } else {
-            self.spots[z][y][x] = Some(player);
+            self.spots[loc.z][loc.y][loc.x] = Some(player);
             if self.lines.iter().any(|sol| {
                 sol.iter().all(|p| {
                     if let Some(p) = self.spots[p.2][p.1][p.0] {
@@ -121,53 +117,53 @@ mod tests {
     #[test]
     fn placing_on_an_empty_board_is_successful() {
         let mut board = Board::new();
-        let result = board.place(Player::A, 0, 1, 2);
+        let result = board.place(Player::A, Location { x: 0, y: 1, z: 2 });
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 
     #[test]
     fn cannot_place_on_the_same_spot_twice() {
         let mut board = Board::new();
-        board.place(Player::A, 0, 1, 2).unwrap();
-        let result = board.place(Player::A, 0, 1, 2);
+        board.place(Player::A, Location::new(0, 1, 2)).unwrap();
+        let result = board.place(Player::A, Location::new(0, 1, 2));
         assert_eq!(result, Err(PlaceErr::Occupied));
     }
 
     #[test]
     fn placing_on_a_second_empty_spot_is_valid() {
         let mut board = Board::new();
-        board.place(Player::A, 0, 1, 2).unwrap();
-        let result = board.place(Player::A, 1, 2, 3);
+        board.place(Player::A, Location::new(0, 1, 2)).unwrap();
+        let result = board.place(Player::A, Location::new(1, 2, 3));
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 
     #[test]
     fn the_game_is_over_when_4_are_placed_in_a_line() {
         let mut board = Board::new();
-        board.place(Player::A, 0, 0, 0).unwrap();
-        board.place(Player::A, 1, 0, 0).unwrap();
-        board.place(Player::A, 2, 0, 0).unwrap();
-        let result = board.place(Player::A, 3, 0, 0);
+        board.place(Player::A, Location::new(0, 0, 0)).unwrap();
+        board.place(Player::A, Location::new(1, 0, 0)).unwrap();
+        board.place(Player::A, Location::new(2, 0, 0)).unwrap();
+        let result = board.place(Player::A, Location::new(3, 0, 0));
         assert_eq!(result, Ok(PlaceResult::GameOver));
     }
 
     #[test]
     fn the_game_continues_when_4_are_not_placed_in_a_line() {
         let mut board = Board::new();
-        board.place(Player::A, 0, 0, 0).unwrap();
-        board.place(Player::A, 1, 0, 0).unwrap();
-        board.place(Player::A, 2, 0, 0).unwrap();
-        let result = board.place(Player::A, 0, 1, 0);
+        board.place(Player::A, Location::new(0, 0, 0)).unwrap();
+        board.place(Player::A, Location::new(1, 0, 0)).unwrap();
+        board.place(Player::A, Location::new(2, 0, 0)).unwrap();
+        let result = board.place(Player::A, Location::new(0, 1, 0));
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 
     #[test]
     fn the_game_continues_when_4_in_a_row_arent_the_same_player() {
         let mut board = Board::new();
-        board.place(Player::A, 0, 0, 0).unwrap();
-        board.place(Player::A, 1, 0, 0).unwrap();
-        board.place(Player::A, 2, 0, 0).unwrap();
-        let result = board.place(Player::B, 3, 0, 0);
+        board.place(Player::A, Location::new(0, 0, 0)).unwrap();
+        board.place(Player::A, Location::new(1, 0, 0)).unwrap();
+        board.place(Player::A, Location::new(2, 0, 0)).unwrap();
+        let result = board.place(Player::B, Location::new(3, 0, 0));
         assert_eq!(result, Ok(PlaceResult::Continue));
     }
 }

@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy_flycam::PlayerPlugin;
+use common::Location;
 use game_display::*;
 use logic::*;
 
@@ -15,9 +16,9 @@ fn main() {
         })
         .insert_resource({
             let mut b = Board::new();
-            b.place(Player::B, 0, 2, 3).unwrap();
-            b.place(Player::A, 0, 0, 0).unwrap();
-            b.place(Player::A, 3, 3, 3).unwrap();
+            b.place(Player::B, Location::new(0, 2, 3)).unwrap();
+            b.place(Player::A, Location::new(0, 0, 0)).unwrap();
+            b.place(Player::A, Location::new(3, 3, 3)).unwrap();
             MyBoard { board: b }
         })
         .add_plugins(DefaultPlugins)
