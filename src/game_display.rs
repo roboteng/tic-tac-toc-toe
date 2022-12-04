@@ -116,7 +116,7 @@ pub fn handle_input(
         for selector in &selectors {
             board.play(Location::new(selector.x, selector.y, selector.z));
             match board.status {
-                GamePlayStatus::Playing(_) => (),
+                GamePlayStatus::Playing(player) => println!("{:?}'s turn", player),
                 _ => commands
                     .entity(selector_entity.single())
                     .despawn_recursive(),
