@@ -79,6 +79,8 @@ pub fn handle_input(
     input: Res<Input<KeyCode>>,
     mut selectors: Query<&mut Selector>,
     mut board: ResMut<MyGame>,
+    mut commands: Commands,
+    selector_entity: Query<Entity, With<Selector>>,
 ) {
     if input.just_pressed(KeyCode::I) {
         for mut selector in selectors.iter_mut() {
@@ -113,6 +115,12 @@ pub fn handle_input(
     if input.just_pressed(KeyCode::Return) {
         for selector in &selectors {
             board.play(Location::new(selector.x, selector.y, selector.z));
+            match board.status {
+                GamePlayStatus::Playing(_) => (),
+                _ => commands
+                    .entity(selector_entity.single())
+                    .despawn_recursive(),
+            }
         }
     }
 }
