@@ -1,12 +1,9 @@
-use crate::{
-    common::Location,
-    logic::{Board, Player},
-};
+use crate::{common::*, logic::*};
 use bevy::prelude::*;
 use core::f32::consts::PI;
 
 pub fn pulse_selector(time: Res<Time>, mut selectors: Query<(&mut Transform, &Selector)>) {
-    let scale = time.elapsed().as_secs_f32().cos() * 0.2 + 1.0;
+    let scale = (4.0 * time.elapsed().as_secs_f32()).cos() * 0.2 + 1.0;
     for (mut transfrom, selector) in selectors.iter_mut() {
         transfrom.scale = Vec3::splat(scale);
         transfrom.translation = Transform::from_xyz(
@@ -38,7 +35,7 @@ pub fn make_selector(
 
 pub fn replace_board(
     mut commands: Commands,
-    board: Res<MyBoard>,
+    game: Res<MyGame>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     prev_markers: Query<Entity, With<Marker>>,
@@ -46,7 +43,7 @@ pub fn replace_board(
     for marker in &prev_markers {
         commands.entity(marker).despawn();
     }
-    for (z, plane) in board.spots.iter().enumerate() {
+    for (z, plane) in game.board.spots.iter().enumerate() {
         for (y, row) in plane.iter().enumerate() {
             for (x, pos) in row.iter().enumerate() {
                 if let Some(player) = pos {
@@ -81,7 +78,7 @@ pub fn replace_board(
 pub fn handle_input(
     input: Res<Input<KeyCode>>,
     mut selectors: Query<&mut Selector>,
-    mut board: ResMut<MyBoard>,
+    mut board: ResMut<MyGame>,
 ) {
     if input.just_pressed(KeyCode::I) {
         for mut selector in selectors.iter_mut() {
@@ -115,9 +112,7 @@ pub fn handle_input(
     }
     if input.just_pressed(KeyCode::Return) {
         for selector in &selectors {
-            board
-                .place(Player::A, Location::new(selector.x, selector.y, selector.z))
-                .unwrap();
+            board.play(Location::new(selector.x, selector.y, selector.z));
         }
     }
 }
@@ -133,14 +128,19 @@ pub struct Selector {
 }
 
 #[derive(Resource, DerefMut, Deref)]
-pub struct MyBoard {
-    pub board: Board,
+pub struct MyGame {
+    pub game: Game,
 }
 
-impl Default for MyBoard {
+impl Default for MyGame {
     fn default() -> Self {
         Self {
-            board: Board::new(),
+            game: Game {
+                board: Board::new(),
+                status: GamePlayStatus::Playing(Player::A),
+                players: vec![Player::A, Player::B],
+                turn: 0,
+            },
         }
     }
 }

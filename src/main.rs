@@ -14,13 +14,7 @@ fn main() {
             color: Color::WHITE,
             brightness: 1.0,
         })
-        .insert_resource({
-            let mut b = Board::new();
-            b.place(Player::B, Location::new(0, 2, 3)).unwrap();
-            b.place(Player::A, Location::new(0, 0, 0)).unwrap();
-            b.place(Player::A, Location::new(3, 3, 3)).unwrap();
-            MyBoard { board: b }
-        })
+        .insert_resource(MyGame::default())
         .add_plugins(DefaultPlugins)
         .add_plugin(PlayerPlugin)
         .add_startup_system(create_frame)
