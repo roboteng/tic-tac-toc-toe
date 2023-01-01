@@ -1,8 +1,70 @@
 use crate::{common::*, logic::*};
-use bevy::prelude::*;
+use bevy::{core_pipeline::clear_color::ClearColorConfig, prelude::*};
 use core::f32::consts::PI;
 
-pub fn pulse_selector(time: Res<Time>, mut selectors: Query<(&mut Transform, &Selector)>) {
+pub struct GameDisplayPlugin;
+
+impl Plugin for GameDisplayPlugin {
+    fn build(&self, app: &mut App) {
+        app.insert_resource(AmbientLight {
+            color: Color::WHITE,
+            brightness: 1.0,
+        })
+        .add_plugin(bevy_flycam::PlayerPlugin)
+        .add_startup_system(setup)
+        .add_startup_system(create_frame)
+        .add_startup_system(make_selector)
+        .add_system(replace_board)
+        .add_system(pulse_selector)
+        .add_system(handle_input)
+        .add_system(update_player_indicator);
+    }
+}
+
+fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.spawn(Camera2dBundle {
+        camera_2d: Camera2d {
+            clear_color: ClearColorConfig::None,
+        },
+        camera: Camera {
+            priority: 1,
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+
+    let font = asset_server.load("fonts/Party Confetti.ttf");
+    let text_style = TextStyle {
+        font,
+        font_size: 60.0,
+        color: Color::WHITE,
+    };
+    let text_alignment = TextAlignment::CENTER;
+
+    commands.spawn((
+        TextBundle::from_section("Hello", text_style).with_text_alignment(text_alignment),
+        PlayerIndicator,
+    ));
+}
+
+fn update_player_indicator(
+    mut indicators: Query<&mut Text, With<PlayerIndicator>>,
+    state: Res<MyGame>,
+) {
+    let text = match state.status {
+        GamePlayStatus::Playing(player) => format!("{}", player),
+        GamePlayStatus::Draw => "Draw".to_string(),
+        GamePlayStatus::Win(player) => format!("{} won", player),
+    };
+    for mut indicator in indicators.iter_mut() {
+        indicator
+            .sections
+            .iter_mut()
+            .for_each(|t| t.value = text.clone());
+    }
+}
+
+fn pulse_selector(time: Res<Time>, mut selectors: Query<(&mut Transform, &Selector)>) {
     let scale = (4.0 * time.elapsed().as_secs_f32()).cos() * 0.2 + 1.0;
     for (mut transfrom, selector) in selectors.iter_mut() {
         transfrom.scale = Vec3::splat(scale);
@@ -15,7 +77,7 @@ pub fn pulse_selector(time: Res<Time>, mut selectors: Query<(&mut Transform, &Se
     }
 }
 
-pub fn make_selector(
+fn make_selector(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
@@ -33,7 +95,7 @@ pub fn make_selector(
         .insert(Selector { x: 1, y: 2, z: 3 });
 }
 
-pub fn replace_board(
+fn replace_board(
     mut commands: Commands,
     game: Res<MyGame>,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -75,7 +137,7 @@ pub fn replace_board(
     }
 }
 
-pub fn handle_input(
+fn handle_input(
     input: Res<Input<KeyCode>>,
     mut selectors: Query<&mut Selector>,
     mut board: ResMut<MyGame>,
@@ -126,10 +188,13 @@ pub fn handle_input(
 }
 
 #[derive(Component)]
-pub struct Marker;
+struct PlayerIndicator;
 
 #[derive(Component)]
-pub struct Selector {
+struct Marker;
+
+#[derive(Component)]
+struct Selector {
     x: usize,
     y: usize,
     z: usize,
@@ -152,38 +217,60 @@ impl Default for MyGame {
     }
 }
 
-pub fn create_frame(
+fn create_frame(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
+    let half_thickness = 0.01;
+    let half_length = 1.5;
     let rail = meshes.add(Mesh::from(shape::Box {
-        min_x: -0.05,
-        max_x: 0.05,
-        min_y: -2.05,
-        max_y: 2.05,
-        min_z: -0.05,
-        max_z: 0.05,
+        min_x: -half_thickness,
+        max_x: half_thickness,
+        min_y: -half_length - half_thickness,
+        max_y: half_length + half_thickness,
+        min_z: -half_thickness,
+        max_z: half_thickness,
     }));
 
-    for x in 0..5 {
-        for z in 0..5 {
+    for z in 0..4 {
+        for y in 0..4 {
+            for x in 0..4 {
+                commands.spawn(PbrBundle {
+                    mesh: meshes.add(Mesh::from(shape::Icosphere {
+                        radius: 0.10,
+                        ..default()
+                    })),
+                    material: materials.add(Color::rgba(0.0, 0.0, 0.0, 1.0).into()),
+                    transform: Transform::from_xyz(x as f32 - 1.5, y as f32 - 1.5, z as f32 - 1.5),
+                    ..default()
+                });
+            }
+        }
+    }
+
+    let num_rails = 4;
+    let offset = 1.5;
+
+    for x in 0..num_rails {
+        for z in 0..num_rails {
             commands.spawn(PbrBundle {
                 mesh: rail.clone(),
                 material: materials.add(Color::rgb(0.0, 0.0, 0.0).into()),
-                transform: Transform::from_xyz(x as f32 - 2.0, 0.0, z as f32 - 2.0),
+                transform: Transform::from_xyz(x as f32 - offset, 0.0, z as f32 - offset),
                 ..default()
             });
         }
     }
 
-    for x in 0..5 {
-        for y in 0..5 {
+    for x in 0..num_rails {
+        for y in 0..num_rails {
             commands.spawn(PbrBundle {
                 mesh: rail.clone(),
                 material: materials.add(Color::rgb(0.0, 0.0, 0.0).into()),
                 transform: {
-                    let mut transform = Transform::from_xyz(x as f32 - 2.0, y as f32 - 2.0, 0.0);
+                    let mut transform =
+                        Transform::from_xyz(x as f32 - offset, y as f32 - offset, 0.0);
                     transform.rotate_x(PI / 2.0);
                     transform
                 },
@@ -192,13 +279,14 @@ pub fn create_frame(
         }
     }
 
-    for y in 0..5 {
-        for z in 0..5 {
+    for y in 0..num_rails {
+        for z in 0..num_rails {
             commands.spawn(PbrBundle {
                 mesh: rail.clone(),
                 material: materials.add(Color::rgb(0.0, 0.0, 0.0).into()),
                 transform: {
-                    let mut transform = Transform::from_xyz(0.0, y as f32 - 2.0, z as f32 - 2.0);
+                    let mut transform =
+                        Transform::from_xyz(0.0, y as f32 - offset, z as f32 - offset);
                     transform.rotate_z(PI / 2.0);
                     transform
                 },

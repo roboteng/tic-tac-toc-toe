@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::common::Location;
 
 use self::calculated::LINES;
@@ -5,28 +7,6 @@ use self::calculated::LINES;
 pub mod computer_player;
 
 const SIZE: usize = 4;
-// fn generate_lines() -> Vec<Vec<Location>> {
-//     let fs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |x| x, |x| 3 - x];
-//     let mut triples: Vec<Vec<Location>> = Vec::new();
-//     for fx in fs {
-//         for fy in fs {
-//             for fz in fs {
-//                 let mut sol = Vec::new();
-//                 for i in 0..SIZE {
-//                     sol.push(Location::new(fx(i), fy(i), fz(i)));
-//                 }
-//                 if !sol.iter().skip(1).any(|p| *p == sol[0])
-//                     && !triples
-//                         .iter()
-//                         .any(|known_sol| known_sol[0] == sol[3] && known_sol[3] == sol[0])
-//                 {
-//                     triples.push(sol);
-//                 }
-//             }
-//         }
-//     }
-//     triples
-// }
 
 mod calculated;
 
@@ -43,6 +23,16 @@ impl Player {
         } else {
             Player::A
         }
+    }
+}
+
+impl Display for Player {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Player::A => "Player A",
+            Player::B => "Player B",
+        };
+        write!(f, "{}", s)
     }
 }
 
@@ -153,8 +143,9 @@ mod tests {
     #[test]
     fn cannot_place_on_the_same_spot_twice() {
         let mut board = Board::new();
-        board.place(Player::A, Location::new(0, 1, 2)).unwrap();
-        let result = board.place(Player::A, Location::new(0, 1, 2));
+        let loc = (0, 1, 2).into();
+        board.place(Player::A, loc).unwrap();
+        let result = board.place(Player::A, loc);
         assert_eq!(result, Err(PlaceErr::Occupied));
     }
 
