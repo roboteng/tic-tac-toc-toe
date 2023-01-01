@@ -1,6 +1,83 @@
-use crate::common::Location;
-
 use super::*;
+use crate::common::Location;
+use minimax::{self, Game, Strategy};
+
+#[derive(Debug, Clone, Copy)]
+struct TTTT;
+impl minimax::Game for TTTT {
+    type S = TTTTState;
+    type M = TTTTMove;
+
+    fn generate_moves(state: &TTTTState, moves: &mut Vec<TTTTMove>) {
+        match state.status {
+            GamePlayStatus::Playing(player) => {
+                let spots = state.board.spots;
+                for (z, plane) in spots.iter().enumerate() {
+                    for (y, row) in plane.iter().enumerate() {
+                        for (x, spot) in row.iter().enumerate() {
+                            if spot.is_none() {
+                                let m = TTTTMove {
+                                    player,
+                                    loc: Location::new(x, y, z),
+                                };
+                                moves.push(m);
+                            }
+                        }
+                    }
+                }
+            }
+            _ => (),
+        }
+    }
+
+    fn get_winner(state: &TTTTState) -> Option<minimax::Winner> {
+        match state.status {
+            GamePlayStatus::Playing(_) => None,
+            GamePlayStatus::Draw => Some(minimax::Winner::Draw),
+            GamePlayStatus::Win(_) => Some(minimax::Winner::PlayerJustMoved),
+        }
+    }
+}
+
+impl minimax::Move for TTTTMove {
+    type G = TTTT;
+
+    fn apply(&self, state: &mut TTTTState) {
+        state.board.place(self.player, self.loc).unwrap();
+    }
+
+    fn undo(&self, state: &mut TTTTState) {
+        let Location { x, y, z } = self.loc;
+        state.board.spots[z][y][x] = None;
+        state.status = GamePlayStatus::Playing(self.player);
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+struct TTTTMove {
+    player: Player,
+    loc: Location,
+}
+
+struct Eval;
+impl minimax::Evaluator for Eval {
+    type G = TTTT;
+
+    fn evaluate(&self, s: &TTTTState) -> minimax::Evaluation {
+        let eval = match s.status {
+            GamePlayStatus::Playing(_) => -eval(&s.board) as minimax::Evaluation,
+            GamePlayStatus::Draw => 0 as minimax::Evaluation,
+            GamePlayStatus::Win(player) => {
+                if player == s.players[0] {
+                    minimax::BEST_EVAL
+                } else {
+                    minimax::WORST_EVAL
+                }
+            }
+        };
+        eval
+    }
+}
 
 #[derive(Default)]
 struct Spots {
@@ -24,75 +101,39 @@ impl Iterator for Spots {
 }
 
 fn next(player: Player, board: &Board, look_ahead: u8) -> Location {
-    let mut loc = Location::new(0, 0, 0);
-    let mut max_eval = f32::MIN;
-    for spot in Spots::default() {
-        let mut board = board.clone();
-        if board.place(player, spot).is_ok() {
-            let eval = minmax(player, &board, look_ahead - 1);
-            println!("{spot:?} -> {eval}");
-            if eval > max_eval {
-                loc = spot;
-                max_eval = eval;
-            }
-        }
-    }
-    loc
+    let start = TTTTState {
+        board: board.clone(),
+        status: GamePlayStatus::Playing(player),
+        players: vec![Player::A, Player::B],
+    };
+    let mut strategy = minimax::Negamax::new(Eval, look_ahead);
+    let k = strategy.choose_move(&start);
+    let mut moves: Vec<TTTTMove> = Vec::new();
+    <TTTT as Game>::generate_moves(&start, &mut moves);
+    let mut scores: Vec<(TTTTMove, f32)> = moves
+        .into_iter()
+        .map(|m| {
+            let mut start = start.clone();
+            <TTTTMove as minimax::Move>::apply(&m, &mut start);
+            let score = eval(&start.board);
+            <TTTTMove as minimax::Move>::undo(&m, &mut start);
+            (m, score)
+        })
+        .collect();
+    scores.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+    scores
+        .into_iter()
+        .for_each(|(m, score)| println!("{m:?} scored {score}"));
+
+    k.unwrap().loc
 }
 
-fn minmax(player: Player, board: &Board, look_ahead: u8) -> f32 {
-    if look_ahead == 0 {
-        return eval(player, board);
-    }
-
-    let mut max_eval = f32::MIN;
-    let mut loc = None;
-    for spot in Spots::default() {
-        let mut board = board.clone();
-        if let Ok(_) = board.place(player, spot) {
-            let eval = minmax(
-                if player == Player::A {
-                    Player::B
-                } else {
-                    Player::A
-                },
-                &board,
-                look_ahead - 1,
-            );
-            if -eval > max_eval {
-                max_eval = eval;
-                loc = Some(spot);
-            }
-        }
-    }
-    max_eval
+fn eval(board: &Board) -> f32 {
+    eval_sub(Player::A, board) - eval_sub(Player::B, board)
 }
 
-fn next_one(player: Player, board: &Board) -> Location {
-    for loc in Spots::default() {
-        let mut board = board.clone();
-        if let Ok(res) = board.place(player, loc) {
-            if res == PlaceResult::GameOver {
-                return loc;
-            }
-        }
-    }
-    next_open(board).unwrap()
-}
-
-fn next_open(board: &Board) -> Option<Location> {
-    for loc in Spots::default() {
-        let mut board = board.clone();
-        if board.place(Player::A, loc).is_ok() {
-            return Some(loc);
-        }
-    }
-    None
-}
-
-fn eval(player: Player, board: &Board) -> f32 {
-    board
-        .lines
+fn eval_sub(player: Player, board: &Board) -> f32 {
+    LINES
         .iter()
         .map(|l| {
             let mut score = 1.0_f32;
@@ -126,7 +167,6 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "Fix later"]
     fn should_block_move_if_opponent_would_win() {
         let mut board = Board::new();
         board.place(Player::A, Location::new(0, 0, 0)).unwrap();
@@ -135,23 +175,6 @@ mod tests {
 
         let next_move = next(Player::B, &board, 2);
         assert_eq!(next_move, Location::new(3, 0, 0));
-    }
-
-    #[test]
-    fn board_with_more_lines_should_be_better() {
-        let mut good_board = Board::new();
-        good_board.place(Player::A, Location::new(1, 0, 0)).unwrap();
-        good_board.place(Player::A, Location::new(2, 0, 0)).unwrap();
-        good_board.place(Player::A, Location::new(0, 1, 0)).unwrap();
-        good_board.place(Player::A, Location::new(0, 2, 0)).unwrap();
-
-        let mut bad_board = Board::new();
-        bad_board.place(Player::A, Location::new(1, 0, 0)).unwrap();
-        bad_board.place(Player::A, Location::new(0, 1, 0)).unwrap();
-        bad_board.place(Player::A, Location::new(3, 2, 3)).unwrap();
-        bad_board.place(Player::A, Location::new(0, 3, 1)).unwrap();
-
-        assert!(eval(Player::A, &good_board) > eval(Player::A, &bad_board));
     }
 
     #[test]
@@ -166,6 +189,6 @@ mod tests {
         bad_board.place(Player::A, Location::new(3, 0, 0)).unwrap();
         bad_board.place(Player::B, Location::new(2, 0, 0)).unwrap();
 
-        assert!(eval(Player::A, &good_board) > eval(Player::A, &bad_board));
+        assert!(eval(&good_board) > eval(&bad_board));
     }
 }

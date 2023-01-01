@@ -1,0 +1,3381 @@
+
+running 10 tests
+test logic::tests::cannot_place_on_the_same_spot_twice ... ok
+test logic::tests::placing_on_a_second_empty_spot_is_valid ... ok
+test logic::computer_player::tests::with_a_one_step_look_ahead_ai_should_win_if_possible ... FAILED
+test logic::computer_player::tests::should_block_move_if_opponent_would_win ... FAILED
+test logic::computer_player::tests::board_with_line_blocked_should_be_worse_than_unblocked ... ok
+test logic::tests::placing_on_an_empty_board_is_successful ... ok
+test logic::computer_player::tests::board_with_more_lines_should_be_better ... ok
+test logic::tests::the_game_continues_when_4_are_not_placed_in_a_line ... ok
+test logic::tests::the_game_continues_when_4_in_a_row_arent_the_same_player ... ok
+test logic::tests::the_game_is_over_when_4_are_placed_in_a_line ... ok
+
+failures:
+
+---- logic::computer_player::tests::with_a_one_step_look_ahead_ai_should_win_if_possible stdout ----
+[src/logic.rs:26] triples.clone() = [
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+]
+thread 'logic::computer_player::tests::with_a_one_step_look_ahead_ai_should_win_if_possible' panicked at 'assertion failed: `(left == right)`
+  left: `Location { x: 0, y: 2, z: 3 }`,
+ right: `Location { x: 3, y: 0, z: 0 }`', src/logic/computer_player.rs:144:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- logic::computer_player::tests::should_block_move_if_opponent_would_win stdout ----
+[src/logic.rs:26] triples.clone() = [
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 1,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 2,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 0,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 3,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 0,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 0,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 1,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 1,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 2,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 2,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 3,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 3,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 0,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 1,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 2,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 3,
+        },
+    ],
+    [
+        Location {
+            x: 0,
+            y: 3,
+            z: 3,
+        },
+        Location {
+            x: 1,
+            y: 2,
+            z: 2,
+        },
+        Location {
+            x: 2,
+            y: 1,
+            z: 1,
+        },
+        Location {
+            x: 3,
+            y: 0,
+            z: 0,
+        },
+    ],
+]
+thread 'logic::computer_player::tests::should_block_move_if_opponent_would_win' panicked at 'assertion failed: `(left == right)`
+  left: `Location { x: 1, y: 1, z: 2 }`,
+ right: `Location { x: 3, y: 0, z: 0 }`', src/logic/computer_player.rs:155:9
+
+
+failures:
+    logic::computer_player::tests::should_block_move_if_opponent_would_win
+    logic::computer_player::tests::with_a_one_step_look_ahead_ai_should_win_if_possible
+
+test result: FAILED. 8 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

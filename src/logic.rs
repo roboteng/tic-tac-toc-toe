@@ -1,30 +1,34 @@
 use crate::common::Location;
 
+use self::calculated::LINES;
+
 pub mod computer_player;
 
 const SIZE: usize = 4;
-fn generate_lines() -> Vec<Vec<Location>> {
-    let fs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |x| x, |x| 3 - x];
-    let mut triples: Vec<Vec<Location>> = Vec::new();
-    for fx in fs {
-        for fy in fs {
-            for fz in fs {
-                let mut sol = Vec::new();
-                for i in 0..SIZE {
-                    sol.push(Location::new(fx(i), fy(i), fz(i)));
-                }
-                if !sol.iter().skip(1).any(|p| *p == sol[0])
-                    && !triples
-                        .iter()
-                        .any(|known_sol| known_sol[0] == sol[3] && known_sol[3] == sol[0])
-                {
-                    triples.push(sol);
-                }
-            }
-        }
-    }
-    triples
-}
+// fn generate_lines() -> Vec<Vec<Location>> {
+//     let fs: [fn(usize) -> usize; 6] = [|_| 0, |_| 1, |_| 2, |_| 3, |x| x, |x| 3 - x];
+//     let mut triples: Vec<Vec<Location>> = Vec::new();
+//     for fx in fs {
+//         for fy in fs {
+//             for fz in fs {
+//                 let mut sol = Vec::new();
+//                 for i in 0..SIZE {
+//                     sol.push(Location::new(fx(i), fy(i), fz(i)));
+//                 }
+//                 if !sol.iter().skip(1).any(|p| *p == sol[0])
+//                     && !triples
+//                         .iter()
+//                         .any(|known_sol| known_sol[0] == sol[3] && known_sol[3] == sol[0])
+//                 {
+//                     triples.push(sol);
+//                 }
+//             }
+//         }
+//     }
+//     triples
+// }
+
+mod calculated;
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Player {
@@ -32,42 +36,25 @@ pub enum Player {
     B,
 }
 
+impl Player {
+    pub fn other_player(&self) -> Self {
+        if *self == Player::A {
+            Player::B
+        } else {
+            Player::A
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Board {
     pub spots: [[[Option<Player>; SIZE]; SIZE]; SIZE],
-    lines: Vec<Vec<Location>>,
 }
 
 impl Board {
     pub fn new() -> Self {
         Self {
-            lines: generate_lines(),
-            spots: [
-                [
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                ],
-                [
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                ],
-                [
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                ],
-                [
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                    [None, None, None, None],
-                ],
-            ],
+            spots: [[[None; 4]; 4]; 4],
         }
     }
 
@@ -76,7 +63,7 @@ impl Board {
             Err(PlaceErr::Occupied)
         } else {
             self.spots[loc.z][loc.y][loc.x] = Some(player);
-            if self.lines.iter().any(|sol| {
+            if LINES.iter().any(|sol| {
                 sol.iter().all(|p| {
                     if let Some(p) = self.at(*p) {
                         p == player
@@ -115,11 +102,10 @@ pub enum PlaceErr {
 }
 
 #[derive(Debug, Clone)]
-pub struct Game {
+pub struct TTTTState {
     pub board: Board,
     pub status: GamePlayStatus,
     pub players: Vec<Player>,
-    pub turn: usize,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -129,21 +115,27 @@ pub enum GamePlayStatus {
     Win(Player),
 }
 
-impl Game {
+impl TTTTState {
     pub fn play(&mut self, loc: Location) {
         match self.status {
             GamePlayStatus::Playing(player) => match self.board.place(player, loc) {
                 Ok(PlaceResult::Continue) => {
-                    self.turn += 1;
-                    let next_player = self.players[self.turn % self.players.len()];
-                    self.status = GamePlayStatus::Playing(next_player);
+                    self.status = GamePlayStatus::Playing(player.other_player());
                 }
                 Ok(PlaceResult::GameOver) => self.status = GamePlayStatus::Win(player),
                 Err(PlaceErr::Occupied) => (),
             },
             GamePlayStatus::Draw => (),
-            GamePlayStatus::Win(p) => (),
+            GamePlayStatus::Win(_) => (),
         }
+    }
+
+    pub fn turn(&self) -> usize {
+        self.board.spots.iter().fold(0, |prev, plane| {
+            plane.iter().fold(prev, |prev, row| {
+                prev + row.iter().filter(|p| p.is_some()).count()
+            })
+        })
     }
 }
 

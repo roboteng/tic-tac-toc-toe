@@ -137,17 +137,16 @@ pub struct Selector {
 
 #[derive(Resource, DerefMut, Deref)]
 pub struct MyGame {
-    pub game: Game,
+    pub game: TTTTState,
 }
 
 impl Default for MyGame {
     fn default() -> Self {
         Self {
-            game: Game {
+            game: TTTTState {
                 board: Board::new(),
                 status: GamePlayStatus::Playing(Player::A),
                 players: vec![Player::A, Player::B],
-                turn: 0,
             },
         }
     }

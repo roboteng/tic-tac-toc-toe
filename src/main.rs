@@ -1,8 +1,6 @@
 use bevy::prelude::*;
 use bevy_flycam::PlayerPlugin;
-use common::Location;
 use game_display::*;
-use logic::*;
 
 mod common;
 mod game_display;
