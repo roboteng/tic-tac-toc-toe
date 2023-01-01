@@ -1,6 +1,6 @@
 use super::*;
 use crate::common::Location;
-use minimax::{self, Game, Strategy};
+use minimax::{self, Strategy};
 
 #[derive(Debug, Clone, Copy)]
 struct TTTT;
@@ -64,7 +64,7 @@ impl minimax::Evaluator for Eval {
     type G = TTTT;
 
     fn evaluate(&self, s: &TTTTState) -> minimax::Evaluation {
-        let eval = match s.status {
+        match s.status {
             GamePlayStatus::Playing(_) => -eval(&s.board) as minimax::Evaluation,
             GamePlayStatus::Draw => 0 as minimax::Evaluation,
             GamePlayStatus::Win(player) => {
@@ -74,8 +74,7 @@ impl minimax::Evaluator for Eval {
                     minimax::WORST_EVAL
                 }
             }
-        };
-        eval
+        }
     }
 }
 
@@ -108,22 +107,6 @@ fn next(player: Player, board: &Board, look_ahead: u8) -> Location {
     };
     let mut strategy = minimax::Negamax::new(Eval, look_ahead);
     let k = strategy.choose_move(&start);
-    let mut moves: Vec<TTTTMove> = Vec::new();
-    <TTTT as Game>::generate_moves(&start, &mut moves);
-    let mut scores: Vec<(TTTTMove, f32)> = moves
-        .into_iter()
-        .map(|m| {
-            let mut start = start.clone();
-            <TTTTMove as minimax::Move>::apply(&m, &mut start);
-            let score = eval(&start.board);
-            <TTTTMove as minimax::Move>::undo(&m, &mut start);
-            (m, score)
-        })
-        .collect();
-    scores.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
-    scores
-        .into_iter()
-        .for_each(|(m, score)| println!("{m:?} scored {score}"));
 
     k.unwrap().loc
 }
