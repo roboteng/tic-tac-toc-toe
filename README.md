@@ -1,5 +1,7 @@
 # Tic Tac Toc Toe
 
+![](/example.png)
+
 This is a 3D version of tic tac toe, played on a 4x4x4 board.
 
 ## Running

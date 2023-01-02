@@ -1,5 +1,8 @@
 use crate::{common::*, logic::*};
 use bevy::{core_pipeline::clear_color::ClearColorConfig, prelude::*};
+use bevy_mod_picking::{
+    DefaultPickingPlugins, PickableBundle, PickingCameraBundle, PickingEvent, Selection,
+};
 use core::f32::consts::PI;
 
 pub struct GameDisplayPlugin;
@@ -10,6 +13,7 @@ impl Plugin for GameDisplayPlugin {
             color: Color::WHITE,
             brightness: 1.0,
         })
+        .add_plugins(DefaultPickingPlugins)
         .add_startup_system(setup)
         .add_startup_system(create_frame)
         .add_startup_system(make_selector)
@@ -17,7 +21,9 @@ impl Plugin for GameDisplayPlugin {
         .add_system(pulse_selector)
         .add_system(handle_input)
         .add_system(handle_camera_movement)
-        .add_system(update_player_indicator);
+        .add_system(update_player_indicator)
+        .add_system(move_selector_on_click)
+        .add_system(deselect_nodes);
     }
 }
 
@@ -52,11 +58,41 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         MainCamera,
+        PickingCameraBundle::default(),
     ));
 }
 
 fn center_looking(pos: Transform) -> Transform {
     pos.looking_at(Vec3::ZERO, Vec3::Y)
+}
+
+fn move_selector_on_click(
+    mut events: EventReader<PickingEvent>,
+    nodes: Query<(Entity, &ClickableNode)>,
+    mut selectors: Query<&mut Selector>,
+) {
+    for event in events.iter() {
+        match event {
+            PickingEvent::Clicked(e) => {
+                for (entity, node) in &nodes {
+                    if *e == entity {
+                        for mut seelctor in selectors.iter_mut() {
+                            seelctor.x = node.0.x;
+                            seelctor.y = node.0.y;
+                            seelctor.z = node.0.z;
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
+fn deselect_nodes(mut nodes: Query<&mut Selection>) {
+    for mut node in nodes.iter_mut() {
+        node.set_selected(false);
+    }
 }
 
 #[derive(Component)]
@@ -66,16 +102,22 @@ fn update_player_indicator(
     mut indicators: Query<&mut Text, With<PlayerIndicator>>,
     state: Res<MyGame>,
 ) {
-    let text = match state.status {
-        GamePlayStatus::Playing(player) => format!("{}", player),
-        GamePlayStatus::Draw => "Draw".to_string(),
-        GamePlayStatus::Win(player) => format!("{} won", player),
+    fn player_color(player: Player) -> Color {
+        match player {
+            Player::A => Color::WHITE,
+            Player::B => Color::BLACK,
+        }
+    }
+    let (text, color) = match state.status {
+        GamePlayStatus::Playing(player) => (format!("{}", player), player_color(player)),
+        GamePlayStatus::Draw => ("Draw".to_string(), Color::YELLOW),
+        GamePlayStatus::Win(player) => (format!("{} won", player), player_color(player)),
     };
     for mut indicator in indicators.iter_mut() {
-        indicator
-            .sections
-            .iter_mut()
-            .for_each(|t| t.value = text.clone());
+        indicator.sections.iter_mut().for_each(|t| {
+            t.value = text.clone();
+            t.style.color = color;
+        });
     }
 }
 
@@ -220,6 +262,7 @@ fn handle_camera_movement(
             camera.translation += k;
             *camera = center_looking(*camera);
         }
+
         if input.pressed(KeyCode::S) {
             let dir = camera.translation.normalize();
             let k = dir.cross(Vec3::NEG_Y).normalize();
@@ -232,6 +275,7 @@ fn handle_camera_movement(
             camera.translation -= k.cross(dir) / 100.0 / time.delta_seconds();
             *camera = center_looking(*camera);
         }
+        camera.translation = camera.translation.normalize() * 8.0;
     }
 }
 
@@ -265,6 +309,9 @@ impl Default for MyGame {
     }
 }
 
+#[derive(Component)]
+struct ClickableNode(Location);
+
 fn create_frame(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -284,15 +331,23 @@ fn create_frame(
     for z in 0..4 {
         for y in 0..4 {
             for x in 0..4 {
-                commands.spawn(PbrBundle {
-                    mesh: meshes.add(Mesh::from(shape::Icosphere {
-                        radius: 0.10,
+                commands.spawn((
+                    PbrBundle {
+                        mesh: meshes.add(Mesh::from(shape::Icosphere {
+                            radius: 0.10,
+                            ..default()
+                        })),
+                        material: materials.add(Color::rgba(0.0, 0.0, 0.0, 1.0).into()),
+                        transform: Transform::from_xyz(
+                            x as f32 - 1.5,
+                            y as f32 - 1.5,
+                            z as f32 - 1.5,
+                        ),
                         ..default()
-                    })),
-                    material: materials.add(Color::rgba(0.0, 0.0, 0.0, 1.0).into()),
-                    transform: Transform::from_xyz(x as f32 - 1.5, y as f32 - 1.5, z as f32 - 1.5),
-                    ..default()
-                });
+                    },
+                    PickableBundle::default(),
+                    ClickableNode((x, y, z).into()),
+                ));
             }
         }
     }
