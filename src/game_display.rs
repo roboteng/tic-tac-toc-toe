@@ -10,13 +10,13 @@ impl Plugin for GameDisplayPlugin {
             color: Color::WHITE,
             brightness: 1.0,
         })
-        .add_plugin(bevy_flycam::PlayerPlugin)
         .add_startup_system(setup)
         .add_startup_system(create_frame)
         .add_startup_system(make_selector)
         .add_system(replace_board)
         .add_system(pulse_selector)
         .add_system(handle_input)
+        .add_system(handle_camera_movement)
         .add_system(update_player_indicator);
     }
 }
@@ -45,7 +45,22 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         TextBundle::from_section("Hello", text_style).with_text_alignment(text_alignment),
         PlayerIndicator,
     ));
+
+    commands.spawn((
+        Camera3dBundle {
+            transform: center_looking(Transform::from_xyz(-2.0, 2.5, 5.0)),
+            ..default()
+        },
+        MainCamera,
+    ));
 }
+
+fn center_looking(pos: Transform) -> Transform {
+    pos.looking_at(Vec3::ZERO, Vec3::Y)
+}
+
+#[derive(Component)]
+struct MainCamera;
 
 fn update_player_indicator(
     mut indicators: Query<&mut Text, With<PlayerIndicator>>,
@@ -183,6 +198,39 @@ fn handle_input(
                     .entity(selector_entity.single())
                     .despawn_recursive(),
             }
+        }
+    }
+}
+
+fn handle_camera_movement(
+    input: Res<Input<KeyCode>>,
+    mut cameras: Query<&mut Transform, With<MainCamera>>,
+    time: Res<Time>,
+) {
+    for mut camera in &mut cameras {
+        if input.pressed(KeyCode::A) {
+            let dir = camera.translation.normalize();
+            let k = dir.cross(Vec3::Y).normalize() / 100.0 / time.delta_seconds();
+            camera.translation += k;
+            *camera = center_looking(*camera);
+        }
+        if input.pressed(KeyCode::D) {
+            let dir = camera.translation.normalize();
+            let k = dir.cross(Vec3::NEG_Y).normalize() / 100.0 / time.delta_seconds();
+            camera.translation += k;
+            *camera = center_looking(*camera);
+        }
+        if input.pressed(KeyCode::S) {
+            let dir = camera.translation.normalize();
+            let k = dir.cross(Vec3::NEG_Y).normalize();
+            camera.translation += k.cross(dir) / 100.0 / time.delta_seconds();
+            *camera = center_looking(*camera);
+        }
+        if input.pressed(KeyCode::W) {
+            let dir = camera.translation.normalize();
+            let k = dir.cross(Vec3::NEG_Y).normalize();
+            camera.translation -= k.cross(dir) / 100.0 / time.delta_seconds();
+            *camera = center_looking(*camera);
         }
     }
 }
